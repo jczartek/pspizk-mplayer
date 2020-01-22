@@ -1,0 +1,65 @@
+﻿<Window x:Class="MPlayer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MPlayer"
+        xmlns:vm="clr-namespace:MPlayer.ViewModel"
+        mc:Ignorable="d"
+        Title="MPlayer" Height="640" Width="480" ResizeMode="NoResize">
+    <Window.Resources>
+        <Image x:Key="MediaStartIcon" Source="Assets\media-playback-start-symbolic.png" Width="48" Height="48" />
+        <Image x:Key="MediaStopIcon" Source="Assets\media-playback-stop-symbolic.png" Width="48" Height="48" />
+        <Image x:Key="MediaPauseIcon" Source="Assets\media-playback-pause-symbolic.png" Width="48" Height="48" />
+        <Image x:Key="MediaBackIcon" Source="Assets\media-seek-backward-symbolic.png" Width="48" Height="48" />
+        <Image x:Key="MediaNextIcon" Source="Assets\media-seek-backward-symbolic-rtl.png" Width="48" Height="48" />
+        <Image x:Key="AddFilesIcon" Source="Assets\value-increase-symbolic.png" Width="48" Height="48" />
+    </Window.Resources>
+    <Window.DataContext>
+        <vm:MainViewModel />
+    </Window.DataContext>
+    <DockPanel Margin="5">
+        <StackPanel DockPanel.Dock="Top">
+            <Button Content="{StaticResource AddFilesIcon}" HorizontalAlignment="Right" Command="{Binding ReadFiles}">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Ellipse Stroke="Black" StrokeThickness="0">
+                                <Ellipse.Fill>
+                                    <RadialGradientBrush>
+                                        <GradientStop Offset="0" Color="Gray" />
+                                        <GradientStop Offset="1" Color="Gray" />
+                                        <GradientStop Offset="1" Color="DarkGray" />
+                                        <RadialGradientBrush.Transform>
+                                            <TransformGroup>
+                                                <ScaleTransform ScaleY="0.65" />
+                                            </TransformGroup>
+                                        </RadialGradientBrush.Transform>
+                                    </RadialGradientBrush>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </StackPanel>
+        <DockPanel DockPanel.Dock="Bottom" VerticalAlignment="Bottom">
+            <!--<Button Content="{StaticResource AddFilesIcon}" DockPanel.Dock="Left" />-->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Content="{StaticResource MediaBackIcon}" />
+                <Button Content="{StaticResource MediaStopIcon}" />
+                <Button Content="{StaticResource MediaStartIcon}" />
+                <Button Content="{StaticResource MediaNextIcon}" />
+            </StackPanel>
+        </DockPanel>
+
+        <ListBox HorizontalAlignment="Center">
+            <ListBoxItem>Pierwszy Utwór</ListBoxItem>
+            <ListBoxItem>Drugi utwór</ListBoxItem>
+            <ListBoxItem>Trzeci utwor</ListBoxItem>
+            <ListBoxItem>Czwarty Utwór</ListBoxItem>
+        </ListBox>
+        
+    </DockPanel>
+</Window>
