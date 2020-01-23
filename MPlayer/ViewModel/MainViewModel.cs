@@ -1,12 +1,28 @@
 ﻿namespace MPlayer.ViewModel
 {
     using MPlayer.Commands;
+    using MPlayer.Model;
+    using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Windows.Forms;
     using System.Windows.Input;
 
-    class MainViewModel
+    public class MainViewModel : INotifyPropertyChanged
     {
+        private readonly DBTracks _model = new DBTracks();
         private FolderBrowserDialog _folderBrowserDialog;
+
+        public IEnumerable<Tracks> Tracks
+        {
+            get { return _model.GetAllTracks(); }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void NotifyPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         private RelayCommand _readFiles;
         public ICommand ReadFiles
         {
@@ -24,6 +40,8 @@
 
                             if (result == DialogResult.OK)
                             {
+                                _model.ReadAllAudioFiles(_folderBrowserDialog.SelectedPath);
+                                NotifyPropertyChanged("Tracks");
                             }
                         });
                 }

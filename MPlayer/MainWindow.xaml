@@ -45,20 +45,15 @@
             </Button>
         </StackPanel>
         <DockPanel DockPanel.Dock="Bottom" VerticalAlignment="Bottom">
-            <!--<Button Content="{StaticResource AddFilesIcon}" DockPanel.Dock="Left" />-->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Content="{StaticResource MediaBackIcon}" />
                 <Button Content="{StaticResource MediaStopIcon}" />
-                <Button Content="{StaticResource MediaStartIcon}" />
+                <Button Content="{StaticResource MediaStartIcon}"/>
                 <Button Content="{StaticResource MediaNextIcon}" />
             </StackPanel>
         </DockPanel>
 
-        <ListBox HorizontalAlignment="Center">
-            <ListBoxItem>Pierwszy Utwór</ListBoxItem>
-            <ListBoxItem>Drugi utwór</ListBoxItem>
-            <ListBoxItem>Trzeci utwor</ListBoxItem>
-            <ListBoxItem>Czwarty Utwór</ListBoxItem>
+        <ListBox Name="lista" HorizontalAlignment="Center" ItemsSource="{Binding Tracks}" >
         </ListBox>
         
     </DockPanel>

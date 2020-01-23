@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using MPlayer.ViewModel;
+using System.Windows;
 
 namespace MPlayer
 {
