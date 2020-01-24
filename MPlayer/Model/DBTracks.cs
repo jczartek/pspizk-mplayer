@@ -21,13 +21,19 @@ namespace MPlayer.Model
             {
                 var file = infoFile.OpenRead();
 
-                _Tracks.Add(new Tracks() { Title = file.Name });
+                _Tracks.Add(new Tracks() { Path = file.Name });
             }
         }
 
         public IEnumerable<Tracks> GetAllTracks()
         {
             return _Tracks;
+        }
+
+        public void AddTracks(string[] paths)
+        {
+            foreach (string path in paths)
+                _Tracks.Add(new Tracks() { Path = path });
         }
     }
 }

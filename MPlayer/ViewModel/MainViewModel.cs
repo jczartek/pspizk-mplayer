@@ -11,6 +11,7 @@
     {
         private readonly DBTracks _model = new DBTracks();
         private FolderBrowserDialog _folderBrowserDialog;
+        private OpenFileDialog _openFileDialog;
 
         public IEnumerable<Tracks> Tracks
         {
@@ -23,14 +24,14 @@
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private RelayCommand _readFiles;
-        public ICommand ReadFiles
+        private RelayCommand _openFolder;
+        public ICommand OpenFolder
         {
             get
             {
-                if (_readFiles == null)
+                if (_openFolder == null)
                 {
-                    _readFiles = new RelayCommand(
+                    _openFolder = new RelayCommand(
                         arg => 
                         {
                             if (_folderBrowserDialog == null)
@@ -45,7 +46,48 @@
                             }
                         });
                 }
-                return _readFiles;
+                return _openFolder;
+            }
+        }
+
+        private RelayCommand _openFiles;
+        public ICommand OpenFiles
+        {
+            get
+            {
+                if (_openFileDialog == null)
+                {
+                    _openFileDialog = new OpenFileDialog()
+                    {
+                        Filter = "mp3 files (*.mp3)|*.mp3|All files (*.*)|*.*",
+                        FilterIndex = 2,
+                        Multiselect = true,
+                        Title = "Open files..."
+                    };
+                }
+
+                _openFiles = new RelayCommand(
+                    arg =>
+                    {
+                        var result = _openFileDialog.ShowDialog();
+
+                        if (result == DialogResult.OK)
+                        {
+                            _model.AddTracks(_openFileDialog.FileNames);
+                            NotifyPropertyChanged("Tracks");
+                        }
+                    });
+                
+                return _openFiles;
+            }
+        }
+
+        
+        public ICommand CloseApplication
+        {
+            get
+            {
+                return new RelayCommand(arg => Application.Exit());
             }
         }
     }

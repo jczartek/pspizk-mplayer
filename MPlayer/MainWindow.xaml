@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MPlayer"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:vm="clr-namespace:MPlayer.ViewModel"
         mc:Ignorable="d"
         Title="MPlayer" Height="640" Width="480" ResizeMode="NoResize">
@@ -19,42 +20,37 @@
         <vm:MainViewModel />
     </Window.DataContext>
     <DockPanel Margin="5">
-        <StackPanel DockPanel.Dock="Top">
-            <Button Content="{StaticResource AddFilesIcon}" HorizontalAlignment="Right" Command="{Binding ReadFiles}">
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Grid>
-                            <Ellipse Stroke="Black" StrokeThickness="0">
-                                <Ellipse.Fill>
-                                    <RadialGradientBrush>
-                                        <GradientStop Offset="0" Color="Gray" />
-                                        <GradientStop Offset="1" Color="Gray" />
-                                        <GradientStop Offset="1" Color="DarkGray" />
-                                        <RadialGradientBrush.Transform>
-                                            <TransformGroup>
-                                                <ScaleTransform ScaleY="0.65" />
-                                            </TransformGroup>
-                                        </RadialGradientBrush.Transform>
-                                    </RadialGradientBrush>
-                                </Ellipse.Fill>
-                            </Ellipse>
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Grid>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+            <Menu>
+                <MenuItem Header="File">
+                    <MenuItem Header="Add Folder..." Command="{Binding OpenFolder}"/>
+                    <MenuItem Header="Add Files..." Command="{Binding OpenFiles}"/>
+                    <Separator />
+                    <MenuItem Header="Exit" Command="{Binding CloseApplication}" />
+                </MenuItem>
+                <MenuItem Header="Edit">
+                    <MenuItem Header="Clear" />
+                    <MenuItem Header="Select All" />
+                </MenuItem>
+                <MenuItem Header="Playback">
+                    <MenuItem Header="Stop" />
+                    <MenuItem Header="Pause" />
+                    <MenuItem Header="Play" />
+                    <MenuItem Header="Next" />
+                </MenuItem>
+                <MenuItem Header="Help">
+                    <MenuItem Header="About" />
+                </MenuItem>
+            </Menu>
+            <Separator Width="3"/>
         </StackPanel>
-        <DockPanel DockPanel.Dock="Bottom" VerticalAlignment="Bottom">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Content="{StaticResource MediaBackIcon}" />
-                <Button Content="{StaticResource MediaStopIcon}" />
-                <Button Content="{StaticResource MediaStartIcon}"/>
-                <Button Content="{StaticResource MediaNextIcon}" />
-            </StackPanel>
-        </DockPanel>
+
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem>Mplayer</StatusBarItem>
+        </StatusBar>
 
         <ListBox Name="lista" HorizontalAlignment="Center" ItemsSource="{Binding Tracks}" >
         </ListBox>
-        
+
     </DockPanel>
 </Window>
