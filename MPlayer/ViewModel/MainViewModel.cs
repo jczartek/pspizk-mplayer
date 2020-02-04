@@ -2,18 +2,21 @@
 {
     using MPlayer.Commands;
     using MPlayer.Model;
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Windows.Forms;
     using System.Windows.Input;
+    using System.Windows.Media;
 
     public class MainViewModel : INotifyPropertyChanged
     {
         private readonly DBTracks _model = new DBTracks();
         private FolderBrowserDialog _folderBrowserDialog;
         private OpenFileDialog _openFileDialog;
+        private readonly MediaPlayer mediaPlayer = new MediaPlayer();
 
-        public IEnumerable<Tracks> Tracks
+        public IEnumerable<Track> Tracks
         {
             get { return _model.GetAllTracks(); }
         }
@@ -22,6 +25,26 @@
         private void NotifyPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private RelayCommand _playTrack;
+        public ICommand PlayTrack
+        {
+            get
+            {
+                if (_playTrack == null)
+                {
+                    _playTrack = new RelayCommand(
+                        arg => 
+                        {
+
+                            mediaPlayer.Open(new Uri(_model[0].Path));
+                            mediaPlayer.Play();
+                         });
+                }
+
+                return _playTrack;
+            }
         }
 
         private RelayCommand _openFolder;
@@ -87,7 +110,7 @@
         {
             get
             {
-                return new RelayCommand(arg => Application.Exit());
+                return new RelayCommand(arg => System.Windows.Application.Current.Shutdown());
             }
         }
     }

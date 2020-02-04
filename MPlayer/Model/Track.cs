@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MPlayer.Model
 {
-    public class Tracks
+    public class Track
     {
         public string Path { get; set; }
         public string Title { get; set; }

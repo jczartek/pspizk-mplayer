@@ -35,7 +35,7 @@
                 <MenuItem Header="Playback">
                     <MenuItem Header="Stop" />
                     <MenuItem Header="Pause" />
-                    <MenuItem Header="Play" />
+                    <MenuItem Header="Play" Command="{Binding PlayTrack}" />
                     <MenuItem Header="Next" />
                 </MenuItem>
                 <MenuItem Header="Help">
@@ -49,7 +49,7 @@
             <StatusBarItem>Mplayer</StatusBarItem>
         </StatusBar>
 
-        <ListBox Name="lista" HorizontalAlignment="Center" ItemsSource="{Binding Tracks}" >
+        <ListBox Name="lista" HorizontalAlignment="Stretch" ItemsSource="{Binding Tracks}" DisplayMemberPath="Title">
         </ListBox>
 
     </DockPanel>
