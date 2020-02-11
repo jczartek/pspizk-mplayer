@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MPlayer.Model
 {
@@ -20,9 +16,13 @@ namespace MPlayer.Model
             foreach(var infoFile in audioInfoFiles)
             {
                 var file = infoFile.OpenRead();
-                var tgfile = TagLib.File.Create(file.Name);
 
-                _Tracks.Add(new Track() { Path = file.Name, Title = tgfile.Tag.Title });
+                try
+                {
+                    _Tracks.Add(Track.Create(file.Name));
+                }
+                catch
+                { }
             }
         }
 
@@ -43,8 +43,7 @@ namespace MPlayer.Model
         {
             foreach (string path in paths)
             {
-                var tgfile = TagLib.File.Create(path);
-                _Tracks.Add(new Track() { Path = path, Title = tgfile.Tag.Title });
+                _Tracks.Add(Track.Create(path));
             }
         }
     }

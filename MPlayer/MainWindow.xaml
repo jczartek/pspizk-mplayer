@@ -4,24 +4,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MPlayer"
+        xmlns:media="clr-namespace:MPlayer.Commands"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:vm="clr-namespace:MPlayer.ViewModel"
         mc:Ignorable="d"
         Title="MPlayer" Height="640" Width="480" ResizeMode="NoResize">
-    <Window.Resources>
-        <Image x:Key="MediaStartIcon" Source="Assets\media-playback-start-symbolic.png" Width="48" Height="48" />
-        <Image x:Key="MediaStopIcon" Source="Assets\media-playback-stop-symbolic.png" Width="48" Height="48" />
-        <Image x:Key="MediaPauseIcon" Source="Assets\media-playback-pause-symbolic.png" Width="48" Height="48" />
-        <Image x:Key="MediaBackIcon" Source="Assets\media-seek-backward-symbolic.png" Width="48" Height="48" />
-        <Image x:Key="MediaNextIcon" Source="Assets\media-seek-backward-symbolic-rtl.png" Width="48" Height="48" />
-        <Image x:Key="AddFilesIcon" Source="Assets\value-increase-symbolic.png" Width="48" Height="48" />
-    </Window.Resources>
     <Window.DataContext>
         <vm:MainViewModel />
     </Window.DataContext>
     <DockPanel Margin="5">
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-            <Menu>
+            <Menu Background="White">
                 <MenuItem Header="File">
                     <MenuItem Header="Add Folder..." Command="{Binding OpenFolder}"/>
                     <MenuItem Header="Add Files..." Command="{Binding OpenFiles}"/>
@@ -30,27 +23,68 @@
                 </MenuItem>
                 <MenuItem Header="Edit">
                     <MenuItem Header="Clear" />
-                    <MenuItem Header="Select All" />
                 </MenuItem>
                 <MenuItem Header="Playback">
-                    <MenuItem Header="Stop" />
-                    <MenuItem Header="Pause" />
-                    <MenuItem Header="Play" Command="{Binding PlayTrack}" />
+                    <MenuItem Header="Stop"  Command="{Binding Stop}" CommandParameter="{Binding ElementName=MediaPlayer}"/>
+                    <MenuItem Header="Pause" Command="{Binding Pause}" CommandParameter="{Binding ElementName=MediaPlayer}" />
+                    <MenuItem Header="Play" Command="{Binding Play}" CommandParameter="{Binding ElementName=MediaPlayer}" />
                     <MenuItem Header="Next" />
+                    <MenuItem Header="Previous" />
                 </MenuItem>
                 <MenuItem Header="Help">
                     <MenuItem Header="About" />
                 </MenuItem>
             </Menu>
             <Separator Width="3"/>
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="cmdPlay"  Command="{Binding Play}" CommandParameter="{Binding ElementName=MediaPlayer}"
+                        BorderThickness="0" Width="20" Height="20" Background="White" Margin="2">
+                    <Path Data="M8 5v14l11-7z" Fill="Black" Height="14" Width="14" Stretch="Fill"/>
+                </Button>
+                <Button x:Name="cmdPause" Command="{Binding Pause}" CommandParameter="{Binding ElementName=MediaPlayer}"
+                        BorderThickness="0" Width="20" Height="20" Background="White" Margin="2">
+                    <Path Data="M6 19h4V5H6v14zm8-14v14h4V5h-4z" Fill="Black" Height="14" Width="14" Stretch="Fill"/>
+                </Button>
+                <Button x:Name="cmdStop"  Command="{Binding Stop}" CommandParameter="{Binding ElementName=MediaPlayer}"
+                        BorderThickness="0" Width="20" Height="20" Background="White" Margin="2">
+                    <Path Data="M6 6h12v12H6z" Fill="Black" Height="14" Width="14" Stretch="Fill"/>
+                </Button>
+            </StackPanel>
+            <Slider  Height="20" Margin="2" Width="205"
+                     Value="{Binding SliderValue}"
+                     Minimum="{Binding SliderMinimum}"
+                     Maximum="{Binding SliderMaximum}"/>
         </StackPanel>
 
+        <MediaElement Name="MediaPlayer"  DockPanel.Dock="Top" 
+                      LoadedBehavior="{Binding LoadedMode}"
+                      Source="{Binding CurrentUri}"
+                      media:MediaBehaviour.TimerTrackCommand="{Binding TimerTrackCommand}" 
+                      media:MediaBehaviour.MediaOpenedCommand="{Binding MediaOpenedCommand}"
+                      media:MediaBehaviour.MediaEndedCommand="{Binding MediaEndedCommand}"
+                      media:MediaBehaviour.MediaEndedCommandParameter="{Binding CurrentTrack}"/>
+
         <StatusBar DockPanel.Dock="Bottom">
-            <StatusBarItem>Mplayer</StatusBarItem>
+            <StatusBarItem Content="{Binding CurrentTime}"/>
+            <StatusBarItem Content="{Binding CurrentTrack.Duraction}" />
         </StatusBar>
 
-        <ListBox Name="lista" HorizontalAlignment="Stretch" ItemsSource="{Binding Tracks}" DisplayMemberPath="Title">
-        </ListBox>
+        <ListView x:Name="TracksList" HorizontalAlignment="Stretch"
+                  ItemsSource="{Binding Tracks}"
+                  IsSynchronizedWithCurrentItem="True"
+                  SelectedItem="{Binding CurrentTrack}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <i:InvokeCommandAction Command="{Binding SelectionChanged}"  CommandParameter="{Binding ElementName=TracksList, Path=SelectedItem}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Description" DisplayMemberBinding="{Binding}" Width="370"/>
+                    <GridViewColumn Header="Duration" DisplayMemberBinding="{Binding Duraction}"  Width="90"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
 
     </DockPanel>
 </Window>
