@@ -27,7 +27,9 @@ namespace MPlayer.Commands
             DependencyProperty.RegisterAttached("MediaEndedCommand", typeof(ICommand), typeof(MediaBehaviour),
                 new FrameworkPropertyMetadata(new PropertyChangedCallback(MediaEndedCommandChanged)));
 
-
+        public static readonly DependencyProperty SliderValueChangedCommandProperty =
+        DependencyProperty.RegisterAttached("SliderValueChangedCommand", typeof(ICommand), typeof(MediaBehaviour),
+        new FrameworkPropertyMetadata(new PropertyChangedCallback(SliderValueChangedCommandChanged)));
 
 
         #endregion
@@ -82,6 +84,21 @@ namespace MPlayer.Commands
                 }
             }
         }
+
+        public static void SliderValueChangedCommandChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
+        {
+            if (d is Slider slider)
+            {
+                if (args.OldValue == null && args.NewValue != null)
+                {
+                    slider.ValueChanged += SliderValueChanged;
+                }
+                else if (args.OldValue != null && args.NewValue == null)
+                {
+                    slider.ValueChanged -= SliderValueChanged;
+                }
+            }
+        }
         #endregion
 
         #region Callbacks
@@ -117,6 +134,14 @@ namespace MPlayer.Commands
             }
         }
 
+        private static void SliderValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (timerTrack.Tag is MediaElement mediaElement)
+            {
+                mediaElement.Position = TimeSpan.FromSeconds(e.NewValue);
+            }
+        }
+
         #endregion
 
         #region Getters/Setters
@@ -146,6 +171,13 @@ namespace MPlayer.Commands
             obj.SetValue(MediaEndedCommandParameterProperty, value);
         }
         public static object GetMediaEndedCommandParameter(DependencyObject obj) => obj.GetValue(MediaEndedCommandParameterProperty);
+
+
+        public static void SetSliderValueChangedCommand(UIElement uiElement, ICommand value)
+        {
+            uiElement.SetValue(SliderValueChangedCommandProperty, value);
+        }
+        public static ICommand GetSliderValueChangedCommand(UIElement element) => (ICommand)element.GetValue(SliderValueChangedCommandProperty);
         #endregion
     }
 }

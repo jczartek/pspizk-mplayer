@@ -34,7 +34,7 @@ namespace MPlayer.Model
             }
         }
 
-        public IEnumerable<Track> GetAllTracks()
+        public IList<Track> GetAllTracks()
         {
             return _Tracks;
         }

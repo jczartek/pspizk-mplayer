@@ -5,6 +5,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Forms;
@@ -14,12 +15,14 @@
 
     public class MainViewModel : INotifyPropertyChanged
     {
+        #region Fields
         private readonly DBTracks _model = new DBTracks();
         private FolderBrowserDialog _folderBrowserDialog;
         private OpenFileDialog _openFileDialog;
-        
+        #endregion
 
-        public IEnumerable<Track> Tracks
+        #region Properties
+        public IList<Track> Tracks
         {
             get { return _model.GetAllTracks(); }
         }
@@ -104,6 +107,35 @@
             }
         }
 
+        private string _startTimeTrackPosition = "00:00:00";
+        public string StartTimeTrackPosition
+        {
+            get { return _startTimeTrackPosition; }
+            set
+            {
+                _startTimeTrackPosition = value;
+                NotifyPropertyChanged(nameof(StartTimeTrackPosition));
+                NotifyPropertyChanged(nameof(TimeTrackPosition));
+            }
+        }
+
+        private string _endTimeTrackPosition = "00:00:00";
+        public string EndTimeTrackPosition
+        {
+            get { return _endTimeTrackPosition; }
+            set
+            {
+                _endTimeTrackPosition = value;
+                NotifyPropertyChanged(nameof(EndTimeTrackPosition));
+                NotifyPropertyChanged(nameof(TimeTrackPosition));
+            }
+        }
+
+        public string TimeTrackPosition
+        {
+            get { return $"{StartTimeTrackPosition}/{EndTimeTrackPosition}"; }
+        }
+
         private double _sliderMaximum;
         public double SliderMaximum
         {
@@ -117,6 +149,7 @@
                 NotifyPropertyChanged(nameof(SliderMaximum));
             }
         }
+        #endregion
 
         #region PropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
@@ -278,6 +311,7 @@
                     {
                         CurrentTime = position;
                         SliderValue = position.TotalSeconds;
+                        StartTimeTrackPosition = position.ToString("hh\\:mm\\:ss");
                     }
                 }));
 
@@ -294,6 +328,7 @@
                     if (obj is Duration duration && duration.HasTimeSpan)
                     {
                         var timespan = duration.TimeSpan;
+                        EndTimeTrackPosition = timespan.ToString("hh\\:mm\\:ss");
 
                         if (SliderMaximum != timespan.TotalSeconds)
                             SliderMaximum = timespan.TotalSeconds;
@@ -312,9 +347,73 @@
                     if (obj is Track track)
                     {
                         LoadedMode = MediaState.Close;
+                        NextPlayTrack(CurrentTrack);
                     }
 
                 }));
+            }
+        }
+
+        private RelayCommand _nextPlayTrackCommand;
+        public ICommand NextPlayTrackCommand
+        {
+            get
+            {
+                return _nextPlayTrackCommand ?? (_nextPlayTrackCommand = new RelayCommand(obj =>
+                {
+                    NextPlayTrack(CurrentTrack);
+                }));
+            }
+        }
+
+        private RelayCommand _previousPlayTrackCommand;
+        public ICommand PreviousPlayTrackCommand
+        {
+            get
+            {
+                return _previousPlayTrackCommand ?? (_previousPlayTrackCommand = new RelayCommand(obj =>
+                {
+                    PreviousPlayTrack(CurrentTrack);
+                }));
+            }
+        }
+        #endregion
+
+        #region Helpers
+
+        private void NextPlayTrack(Track track)
+        {
+            if (Tracks.Count > 0)
+            {
+                Track nextTrack;
+                var currentIndexTrack = Tracks.IndexOf(track);
+                var nextIndexTrack = currentIndexTrack + 1;
+
+                nextTrack = nextIndexTrack < Tracks.Count ?
+                        Tracks[nextIndexTrack] :
+                        Tracks.FirstOrDefault();
+
+                CurrentTrack = nextTrack;
+                SliderMinimum = SliderMaximum = SliderValue = 0.0;
+                LoadedMode = MediaState.Play;
+            }
+        }
+
+        private void PreviousPlayTrack(Track track)
+        {
+            if (Tracks.Count > 0)
+            {
+                Track previousTrack;
+                var currentIndexTrack = Tracks.IndexOf(track);
+                var previousIndexTrack = currentIndexTrack - 1;
+
+                previousTrack = previousIndexTrack > 0 ?
+                    Tracks[previousIndexTrack] :
+                    Tracks.Last();
+
+                CurrentTrack = previousTrack;
+                SliderMinimum = SliderMaximum = SliderValue = 0.0;
+                LoadedMode = MediaState.Play;
             }
         }
         #endregion

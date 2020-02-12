@@ -28,8 +28,8 @@
                     <MenuItem Header="Stop"  Command="{Binding Stop}" CommandParameter="{Binding ElementName=MediaPlayer}"/>
                     <MenuItem Header="Pause" Command="{Binding Pause}" CommandParameter="{Binding ElementName=MediaPlayer}" />
                     <MenuItem Header="Play" Command="{Binding Play}" CommandParameter="{Binding ElementName=MediaPlayer}" />
-                    <MenuItem Header="Next" />
-                    <MenuItem Header="Previous" />
+                    <MenuItem Header="Next" Command="{Binding NextPlayTrackCommand}"/>
+                    <MenuItem Header="Previous" Command="{Binding PreviousPlayTrackCommand}"/>
                 </MenuItem>
                 <MenuItem Header="Help">
                     <MenuItem Header="About" />
@@ -53,7 +53,8 @@
             <Slider  Height="20" Margin="2" Width="205"
                      Value="{Binding SliderValue}"
                      Minimum="{Binding SliderMinimum}"
-                     Maximum="{Binding SliderMaximum}"/>
+                     Maximum="{Binding SliderMaximum}"
+                     media:MediaBehaviour.SliderValueChangedCommand="{Binding TimerTrackCommand}"/>
         </StackPanel>
 
         <MediaElement Name="MediaPlayer"  DockPanel.Dock="Top" 
@@ -65,13 +66,12 @@
                       media:MediaBehaviour.MediaEndedCommandParameter="{Binding CurrentTrack}"/>
 
         <StatusBar DockPanel.Dock="Bottom">
-            <StatusBarItem Content="{Binding CurrentTime}"/>
-            <StatusBarItem Content="{Binding CurrentTrack.Duraction}" />
+            <StatusBarItem Content="{Binding TimeTrackPosition, Mode=OneWay}"/>
         </StatusBar>
 
         <ListView x:Name="TracksList" HorizontalAlignment="Stretch"
                   ItemsSource="{Binding Tracks}"
-                  IsSynchronizedWithCurrentItem="True"
+                  IsSynchronizedWithCurrentItem="False"
                   SelectedItem="{Binding CurrentTrack}">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
