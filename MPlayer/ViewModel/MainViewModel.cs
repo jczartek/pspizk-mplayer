@@ -172,7 +172,7 @@
                     _selectionChanged = new RelayCommand(
                         selectedItem =>
                         {
-                            CurrentTrack = (selectedItem as Track);
+                            if (selectedItem is Track track) PlayTrack(track.Path);
                         });
                 }
 
@@ -272,7 +272,7 @@
                     _openFileDialog = new OpenFileDialog()
                     {
                         Filter = "mp3 files (*.mp3)|*.mp3|All files (*.*)|*.*",
-                        FilterIndex = 2,
+                        FilterIndex = 1,
                         Multiselect = true,
                         Title = "Open files..."
                     };
@@ -293,6 +293,32 @@
                 return _openFiles;
             }
         }
+
+        private RelayCommand _showAboutDialog;
+        public ICommand ShowAboutDialog
+        {
+            get
+            {
+                return _showAboutDialog ?? (_showAboutDialog = new RelayCommand(obj =>
+                {
+                    System.Windows.MessageBox.Show("Mplayer: program zaliczeniowy");
+                }));
+            }
+        }
+
+        private RelayCommand _clearTracksList;
+        public ICommand ClearTracksList
+        {
+            get
+            {
+                return _clearTracksList ?? (_clearTracksList = new RelayCommand(obj =>
+                {
+                    LoadedMode = MediaState.Close;
+                    _model.Clear();
+                }));
+            }
+        }
+
 
         public ICommand CloseApplication
         {
@@ -382,6 +408,20 @@
         #endregion
 
         #region Helpers
+
+        private void PlayTrack(Uri path)
+        {
+            if (Tracks.Count > 0)
+            {
+                var currentTrack = Tracks.FirstOrDefault(t => t.Path == path);
+
+                if (currentTrack != null)
+                {
+                    CurrentTrack = currentTrack;
+                    LoadedMode = MediaState.Play;
+                }
+            }
+        }
 
         private void NextPlayTrack(Track track)
         {

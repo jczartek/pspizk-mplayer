@@ -46,5 +46,10 @@ namespace MPlayer.Model
                 _Tracks.Add(Track.Create(path));
             }
         }
+
+        public void Clear()
+        {
+            _Tracks.Clear();
+        }
     }
 }

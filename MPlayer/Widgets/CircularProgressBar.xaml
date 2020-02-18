@@ -9,8 +9,8 @@
                 <ControlTemplate TargetType="local:CircularProgressBar">
                     <Grid>
                         <Ellipse Stroke="Black" Fill="{TemplateBinding Background}" />
-                        <Ellipse Stroke="Black" Margin="15" Fill="White" />
-                        <local:Arc StrokeThickness="15" Stroke="{TemplateBinding BorderBrush}">
+                        <Ellipse Stroke="Black" Margin="8" Fill="White" />
+                        <local:Arc StrokeThickness="8" Stroke="{TemplateBinding BorderBrush}">
                             <local:Arc.StartAngle>
                                 <MultiBinding Converter="{StaticResource ProgressConverter}">
                                     <Binding Path="Minimum" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=ProgressBar}" />
