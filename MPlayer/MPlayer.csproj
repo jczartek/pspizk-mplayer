@@ -65,6 +65,9 @@
     <Compile Include="Commands\MediaBehaviour.cs" />
     <Compile Include="Model\Track.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="Widgets\Arc.cs" />
+    <Compile Include="Widgets\CircularProgressBar.cs" />
+    <Compile Include="Widgets\ProgressToAngleConverter.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -78,6 +81,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Widgets\CircularProgressBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\DBTracks.cs" />

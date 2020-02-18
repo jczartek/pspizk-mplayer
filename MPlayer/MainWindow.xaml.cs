@@ -10,6 +10,7 @@ namespace MPlayer
         public MainWindow()
         {
             InitializeComponent();
+
         }
     }
 }

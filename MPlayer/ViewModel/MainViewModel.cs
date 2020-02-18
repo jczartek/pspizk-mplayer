@@ -78,7 +78,7 @@
             }
         }
 
-        private double _sliderValue;
+        private double _sliderValue = 0.0;
         public double SliderValue
         {
             get { return _sliderValue; }
@@ -104,6 +104,20 @@
                 _sliderMinimum = value;
                 NotifyPropertyChanged(nameof(SliderMinimum));
 
+            }
+        }
+
+        private double _sliderMaximum = 1.0;
+        public double SliderMaximum
+        {
+            get { return _sliderMaximum; }
+            set
+            {
+                if (_sliderMaximum == value)
+                    return;
+
+                _sliderMaximum = value;
+                NotifyPropertyChanged(nameof(SliderMaximum));
             }
         }
 
@@ -136,19 +150,7 @@
             get { return $"{StartTimeTrackPosition}/{EndTimeTrackPosition}"; }
         }
 
-        private double _sliderMaximum;
-        public double SliderMaximum
-        {
-            get { return _sliderMaximum; }
-            set
-            {
-                if (_sliderMaximum == value)
-                    return;
 
-                _sliderMaximum = value;
-                NotifyPropertyChanged(nameof(SliderMaximum));
-            }
-        }
         #endregion
 
         #region PropertyChanged

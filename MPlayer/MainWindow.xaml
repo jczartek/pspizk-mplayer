@@ -7,11 +7,19 @@
         xmlns:media="clr-namespace:MPlayer.Commands"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:vm="clr-namespace:MPlayer.ViewModel"
+        xmlns:widgets="clr-namespace:MPlayer.Widgets"
         mc:Ignorable="d"
         Title="MPlayer" Height="640" Width="480" ResizeMode="NoResize">
     <Window.DataContext>
         <vm:MainViewModel />
     </Window.DataContext>
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Widgets/CircularProgressBar.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <DockPanel Margin="5">
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
             <Menu Background="White">
@@ -50,7 +58,7 @@
                     <Path Data="M6 6h12v12H6z" Fill="Black" Height="14" Width="14" Stretch="Fill"/>
                 </Button>
             </StackPanel>
-            <Slider  Height="20" Margin="2" Width="205"
+            <Slider  Name="_Slider" Height="20" Margin="2" Width="205"
                      Value="{Binding SliderValue}"
                      Minimum="{Binding SliderMinimum}"
                      Maximum="{Binding SliderMaximum}"
@@ -64,6 +72,26 @@
                       media:MediaBehaviour.MediaOpenedCommand="{Binding MediaOpenedCommand}"
                       media:MediaBehaviour.MediaEndedCommand="{Binding MediaEndedCommand}"
                       media:MediaBehaviour.MediaEndedCommandParameter="{Binding CurrentTrack}"/>
+
+        <Grid DockPanel.Dock="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Button Content="P" Grid.Column="0" Grid.Row="0" />
+            <Button Content="N" Grid.Column="2" Grid.Row="0" />
+            <widgets:CircularProgressBar  Grid.Column="1" Grid.Row="0" Width="60" Background="Red" BorderBrush="Black"
+                                    Minimum="{Binding SliderMinimum}"
+                                    Maximum="{Binding SliderMaximum}"
+                                    Value="{Binding SliderValue}"/>
+
+        </Grid>
 
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem Content="{Binding TimeTrackPosition, Mode=OneWay}"/>
