@@ -110,7 +110,7 @@
             </i:Interaction.Triggers>
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Description" DisplayMemberBinding="{Binding}" Width="370"/>
+                    <GridViewColumn Header="Description" DisplayMemberBinding="{Binding FullName}" Width="370"/>
                     <GridViewColumn Header="Duration" DisplayMemberBinding="{Binding Duraction}"  Width="90"/>
                 </GridView>
             </ListView.View>

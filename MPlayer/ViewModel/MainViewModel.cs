@@ -10,8 +10,6 @@
     using System.Windows.Controls;
     using System.Windows.Forms;
     using System.Windows.Input;
-    using System.Windows.Media;
-    using System.Windows.Threading;
 
     public class MainViewModel : INotifyPropertyChanged
     {
@@ -32,7 +30,10 @@
         {
             get { return _currentUri; }
             set 
-            { 
+            {
+                if (_currentUri == value)
+                    return;
+
                 _currentUri = value;
                 NotifyPropertyChanged(nameof(CurrentUri));
             }
@@ -44,9 +45,8 @@
             get { return _currentTrack; }
             set
             {
-                if (value is Track)
+                if (value is Track && value != _currentTrack)
                 {
-                    CurrentUri = value.Path;
                     _currentTrack = value;
                     NotifyPropertyChanged(nameof(CurrentTrack));
                 }
@@ -418,6 +418,7 @@
                 if (currentTrack != null)
                 {
                     CurrentTrack = currentTrack;
+                    CurrentUri = currentTrack.Path;
                     LoadedMode = MediaState.Play;
                 }
             }
@@ -436,6 +437,7 @@
                         Tracks.FirstOrDefault();
 
                 CurrentTrack = nextTrack;
+                CurrentUri = nextTrack.Path;
                 SliderMinimum = SliderMaximum = SliderValue = 0.0;
                 LoadedMode = MediaState.Play;
             }
@@ -454,6 +456,7 @@
                     Tracks.Last();
 
                 CurrentTrack = previousTrack;
+                CurrentUri = previousTrack.Path;
                 SliderMinimum = SliderMaximum = SliderValue = 0.0;
                 LoadedMode = MediaState.Play;
             }
