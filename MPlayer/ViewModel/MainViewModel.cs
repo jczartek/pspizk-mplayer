@@ -53,6 +53,20 @@
             }
         }
 
+        private string _currentTrackName;
+        public string CurrentTrackName
+        {
+            get { return _currentTrackName; }
+            set
+            {
+                if (value == _currentTrackName)
+                    return;
+
+                _currentTrackName = value;
+                NotifyPropertyChanged(nameof(CurrentTrackName));
+            }
+        }
+
         private MediaState _loadedMode;
         public MediaState LoadedMode
         {
@@ -190,10 +204,10 @@
                     _play = new RelayCommand(
                         player => 
                         {
-                            if (CurrentUri != null)
-                            {
-                                LoadedMode = MediaState.Play;
-                            }
+                            if (CurrentTrack == null)
+                                CurrentTrack = Tracks.FirstOrDefault();
+
+                            PlayTrack(CurrentTrack.Path);
                          });
                 }
 
@@ -212,6 +226,7 @@
                         player =>
                         {
                             LoadedMode = MediaState.Stop;
+                            CurrentTrackName = default;
                         });
                 }
 
@@ -419,6 +434,7 @@
                 {
                     CurrentTrack = currentTrack;
                     CurrentUri = currentTrack.Path;
+                    CurrentTrackName = currentTrack.FullName;
                     LoadedMode = MediaState.Play;
                 }
             }
@@ -438,6 +454,7 @@
 
                 CurrentTrack = nextTrack;
                 CurrentUri = nextTrack.Path;
+                CurrentTrackName = nextTrack.FullName;
                 SliderMinimum = SliderMaximum = SliderValue = 0.0;
                 LoadedMode = MediaState.Play;
             }
@@ -457,6 +474,7 @@
 
                 CurrentTrack = previousTrack;
                 CurrentUri = previousTrack.Path;
+                CurrentTrackName = previousTrack.FullName;
                 SliderMinimum = SliderMaximum = SliderValue = 0.0;
                 LoadedMode = MediaState.Play;
             }

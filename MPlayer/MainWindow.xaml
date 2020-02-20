@@ -71,9 +71,10 @@
                       media:MediaBehaviour.MediaEndedCommand="{Binding MediaEndedCommand}"
                       media:MediaBehaviour.MediaEndedCommandParameter="{Binding CurrentTrack}"/>
 
-        <Grid DockPanel.Dock="Top" Margin="3">
+        <Grid DockPanel.Dock="Top" Margin="3, 8, 3, 2">
             <Grid.RowDefinitions>
-                <RowDefinition Height="60" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
@@ -82,17 +83,19 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Button Style="{StaticResource GoBackButtons}" Grid.Column="0" Grid.Row="0" Command="{Binding PreviousPlayTrackCommand}">
- 
+            <Button Style="{StaticResource GoBackButtons}" Grid.Column="0" Grid.Row="0"  Command="{Binding PreviousPlayTrackCommand}">
                 <Path Data="M9.293 2.293L3.586 8l5.707 5.707 1.414-1.414L6.414 8l4.293-4.293z" Fill="White" Stretch="Fill"/>
             </Button>
             <Button Style="{StaticResource GoBackButtons}" Grid.Column="2" Grid.Row="0" Command="{Binding NextPlayTrackCommand}">
                 <Path Data="M6.707 2.293L5.293 3.707 9.586 8l-4.293 4.293 1.414 1.414L12.414 8z" Fill="White" Stretch="Fill" />
             </Button>
-            <widgets:CircularProgressBar  Grid.Column="1" Grid.Row="0" Width="60" Background="LightGray" BorderBrush="MidnightBlue"
+            <widgets:CircularProgressBar  Grid.Column="1" Grid.Row="0" Width="60" Height="60" Background="LightGray" BorderBrush="MidnightBlue"
                                     Minimum="{Binding SliderMinimum}"
                                     Maximum="{Binding SliderMaximum}"
                                     Value="{Binding SliderValue}"/>
+            <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" TextTrimming="CharacterEllipsis" Margin="2"
+                       VerticalAlignment="Center" HorizontalAlignment="Center"
+                       Text="{Binding CurrentTrackName}" />
 
         </Grid>
 
@@ -110,7 +113,7 @@
             </i:Interaction.Triggers>
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Description" DisplayMemberBinding="{Binding FullName}" Width="370"/>
+                    <GridViewColumn Header="Playlist" DisplayMemberBinding="{Binding FullName}" Width="370"/>
                     <GridViewColumn Header="Duration" DisplayMemberBinding="{Binding Duraction}"  Width="90"/>
                 </GridView>
             </ListView.View>
