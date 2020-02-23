@@ -262,7 +262,11 @@
                         arg => 
                         {
                             if (_folderBrowserDialog == null)
-                                _folderBrowserDialog = new FolderBrowserDialog();
+                                _folderBrowserDialog = new FolderBrowserDialog()
+                                {
+                                    ShowNewFolderButton = false,
+                                    SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic)
+                                };
 
                             var result = _folderBrowserDialog.ShowDialog();
 
@@ -289,7 +293,8 @@
                         Filter = "mp3 files (*.mp3)|*.mp3|All files (*.*)|*.*",
                         FilterIndex = 1,
                         Multiselect = true,
-                        Title = "Open files..."
+                        Title = "Open files...",
+                        InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic)
                     };
                 }
 

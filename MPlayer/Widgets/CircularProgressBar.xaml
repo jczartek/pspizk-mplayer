@@ -13,14 +13,14 @@
                         <local:Arc StrokeThickness="8" Stroke="{TemplateBinding BorderBrush}">
                             <local:Arc.StartAngle>
                                 <MultiBinding Converter="{StaticResource ProgressConverter}">
-                                    <Binding Path="Minimum" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=ProgressBar}" />
-                                    <Binding Path="." RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=ProgressBar}" />
+                                    <Binding Path="Minimum" RelativeSource="{RelativeSource TemplatedParent}" />
+                                    <Binding Path="." RelativeSource="{RelativeSource TemplatedParent}" />
                                 </MultiBinding>
                             </local:Arc.StartAngle>
                             <local:Arc.EndAngle>
                                 <MultiBinding Converter="{StaticResource ProgressConverter}">
-                                    <Binding Path="Value" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=ProgressBar}" />
-                                    <Binding Path="." RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=ProgressBar}" />
+                                    <Binding Path="Value" RelativeSource="{RelativeSource TemplatedParent}" />
+                                    <Binding Path="." RelativeSource="{RelativeSource TemplatedParent}" />
                                 </MultiBinding>
                             </local:Arc.EndAngle>
                         </local:Arc>

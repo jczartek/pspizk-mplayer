@@ -16,13 +16,10 @@ namespace MPlayer.Model
             foreach(var infoFile in audioInfoFiles)
             {
                 var file = infoFile.OpenRead();
+                var track = Track.Create(file.Name);
 
-                try
-                {
+                if (track != null)
                     _Tracks.Add(Track.Create(file.Name));
-                }
-                catch
-                { }
             }
         }
 
@@ -43,7 +40,13 @@ namespace MPlayer.Model
         {
             foreach (string path in paths)
             {
-                _Tracks.Add(Track.Create(path));
+                if (Path.GetExtension(path).ToLower() == ".mp3")
+                {
+                    var track = Track.Create(path);
+
+                    if (track != null)
+                        _Tracks.Add(track);
+                }
             }
         }
 

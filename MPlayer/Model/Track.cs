@@ -1,6 +1,7 @@
 ﻿namespace MPlayer.Model
 {
     using System;
+    using System.Windows;
     using TagLib;
     public class Track
     {
@@ -14,8 +15,17 @@
             if (path == null)
                 throw new ArgumentNullException();
 
+            File tagFile = default;
+            try
+            {
+                tagFile = TagLib.File.Create(path);
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show(e.Message + " " + path, "Ostrzeżenie...", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return null;
+            }
 
-            File tagFile = TagLib.File.Create(path);
 
             Track track = new Track()
             {
