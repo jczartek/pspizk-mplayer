@@ -207,7 +207,7 @@
                             if (CurrentTrack == null)
                                 CurrentTrack = Tracks.FirstOrDefault();
 
-                            PlayTrack(CurrentTrack.Path);
+                            PlayTrack(CurrentTrack?.Path);
                          });
                 }
 

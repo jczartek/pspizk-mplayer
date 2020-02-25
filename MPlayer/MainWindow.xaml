@@ -21,17 +21,23 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding OpenFiles}" Modifiers="Ctrl" Key="O" />
+        <KeyBinding Command="{Binding OpenFolder}" Modifiers="Control+Shift" Key="O" />
+        <KeyBinding Command="{Binding CloseApplication}" Modifiers="Ctrl" Key="Z" />
+        <KeyBinding Command="{Binding ClearTracksList}" Key="Delete" />
+    </Window.InputBindings>
     <DockPanel Margin="5">
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
             <Menu Background="White">
                 <MenuItem Header="File">
-                    <MenuItem Header="Add Folder..." Command="{Binding OpenFolder}"/>
-                    <MenuItem Header="Add Files..." Command="{Binding OpenFiles}"/>
+                    <MenuItem Header="Add Folder..." Command="{Binding OpenFolder}" InputGestureText="Ctrl+O"/>
+                    <MenuItem Header="Add Files..." Command="{Binding OpenFiles}" InputGestureText="Ctrl+Shift+O"/>
                     <Separator />
-                    <MenuItem Header="Exit" Command="{Binding CloseApplication}" />
+                    <MenuItem Header="Exit" Command="{Binding CloseApplication}"  InputGestureText="Ctrl+Z"/>
                 </MenuItem>
                 <MenuItem Header="Edit">
-                    <MenuItem Header="Clear" Command="{Binding ClearTracksList}" CommandParameter="{Binding ElementName=MediaPlayer}" />
+                    <MenuItem Header="Clear" Command="{Binding ClearTracksList}" InputGestureText="Delete" />
                 </MenuItem>
                 <MenuItem Header="Playback">
                     <MenuItem Header="Stop"  Command="{Binding Stop}" CommandParameter="{Binding ElementName=MediaPlayer}"/>
@@ -46,13 +52,13 @@
             </Menu>
             <Separator Width="3"/>
             <StackPanel Orientation="Horizontal">
-                <Button Style="{StaticResource MenuButtons}" Command="{Binding Play}" CommandParameter="{Binding ElementName=MediaPlayer}">
+                <Button Style="{StaticResource MenuButtons}" Command="{Binding Play}">
                     <Path Data="M8 5v14l11-7z" Fill="Black" Height="14" Width="14" Stretch="Fill"/>
                 </Button>
-                <Button Style="{StaticResource MenuButtons}" Command="{Binding Pause}" CommandParameter="{Binding ElementName=MediaPlayer}" >
+                <Button Style="{StaticResource MenuButtons}" Command="{Binding Pause}">
                     <Path Data="M6 19h4V5H6v14zm8-14v14h4V5h-4z" Fill="Black" Height="14" Width="14" Stretch="Fill"/>
                 </Button>
-                <Button Style="{StaticResource MenuButtons}" Command="{Binding Stop}" CommandParameter="{Binding ElementName=MediaPlayer}">
+                <Button Style="{StaticResource MenuButtons}" Command="{Binding Stop}">
                     <Path Data="M6 6h12v12H6z" Fill="Black" Height="14" Width="14" Stretch="Fill"/>
                 </Button>
             </StackPanel>
